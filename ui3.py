@@ -20,14 +20,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Modern Dark CSS Styling
+# Enhanced CSS with Light/Dark Theme Support
 def apply_modern_css():
     st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
     
-    /* Global Dark Theme Variables */
+    /* Light/Dark Theme Variables */
     :root {
         --primary-color: #00d4ff;
         --secondary-color: #0099cc;
@@ -35,6 +35,10 @@ def apply_modern_css():
         --success-color: #51cf66;
         --warning-color: #ffd43b;
         --danger-color: #ff6b6b;
+    }
+    
+    /* Dark Theme (Default) */
+    :root {
         --text-primary: #ffffff;
         --text-secondary: #b0b0b0;
         --text-muted: #666666;
@@ -55,11 +59,29 @@ def apply_modern_css():
         --border-radius-lg: 16px;
     }
     
+    /* Light Theme */
+    [data-theme="light"] {
+        --text-primary: #1a1a1a;
+        --text-secondary: #4a4a4a;
+        --text-muted: #888888;
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --bg-tertiary: #e9ecef;
+        --bg-card: #ffffff;
+        --bg-input: #f8f9fa;
+        --border-color: #dee2e6;
+        --border-hover: #adb5bd;
+        --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.1);
+        --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.15);
+        --shadow-heavy: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
     /* Global Styles */
     .stApp {
         background: var(--bg-primary);
         color: var(--text-primary);
         font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
     }
     
     /* Hide Streamlit Elements */
@@ -69,7 +91,7 @@ def apply_modern_css():
     .stDeployButton {display: none;}
     
     /* Sidebar Styling */
-    .css-1d391kg {
+    .css-1d391kg, .css-1cypcdb {
         background: var(--bg-secondary);
         border-right: 1px solid var(--border-color);
     }
@@ -78,7 +100,7 @@ def apply_modern_css():
         background: transparent;
     }
     
-    /* Button Styling */
+    /* Button Styling - Fixed for better responsiveness */
     .stButton > button {
         background: var(--bg-tertiary);
         color: var(--text-primary);
@@ -88,6 +110,7 @@ def apply_modern_css():
         font-weight: 500;
         transition: all 0.3s ease;
         width: 100%;
+        cursor: pointer;
     }
     
     .stButton > button:hover {
@@ -98,16 +121,80 @@ def apply_modern_css():
         box-shadow: var(--shadow-medium);
     }
     
-    .stButton > button[kind="primary"] {
-        background: var(--gradient-primary);
-        border: none;
-        color: var(--bg-primary);
-        font-weight: 600;
+    .stButton > button:active {
+        transform: translateY(0);
+        box-shadow: var(--shadow-light);
     }
     
-    .stButton > button[kind="primary"]:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-heavy);
+    /* Emergency Button - Fixed positioning and responsiveness */
+    .emergency-button {
+        position: relative;
+        margin: 1rem 0;
+        animation: pulse-emergency 2s infinite;
+    }
+    
+    .emergency-button button {
+        background: var(--gradient-danger) !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+        padding: 0.8rem 1.5rem !important;
+    }
+    
+    .emergency-button:hover button {
+        animation: none !important;
+        transform: scale(1.05) !important;
+    }
+    
+    @keyframes pulse-emergency {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.8; }
+    }
+    
+    /* Navigation Button Fixes */
+    .nav-button-container {
+        margin: 0.5rem 0;
+    }
+    
+    .nav-button-container button {
+        background: var(--bg-tertiary) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border-color) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .nav-button-container button:hover {
+        background: var(--primary-color) !important;
+        color: var(--bg-primary) !important;
+        border-color: var(--primary-color) !important;
+    }
+    
+    .nav-button-active button {
+        background: var(--gradient-primary) !important;
+        color: var(--bg-primary) !important;
+        border-color: var(--primary-color) !important;
+    }
+    
+    /* Setup Button on Dashboard - Fixed */
+    .setup-redirect-btn {
+        background: var(--gradient-primary) !important;
+        color: var(--bg-primary) !important;
+        border: none !important;
+        padding: 1rem 2rem !important;
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        border-radius: var(--border-radius) !important;
+        transition: all 0.3s ease !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        text-align: center !important;
+        cursor: pointer !important;
+    }
+    
+    .setup-redirect-btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: var(--shadow-heavy) !important;
     }
     
     /* Form Controls */
@@ -138,6 +225,7 @@ def apply_modern_css():
         text-align: center;
         position: relative;
         overflow: hidden;
+        box-shadow: var(--shadow-light);
     }
     
     .main-header::before {
@@ -177,17 +265,41 @@ def apply_modern_css():
         padding: 1.5rem;
         margin: 1rem 0;
         transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
     }
     
     .content-card:hover {
         border-color: var(--border-hover);
-        box-shadow: var(--shadow-light);
+        box-shadow: var(--shadow-medium);
     }
     
     .content-card h2, .content-card h3 {
         color: var(--text-primary);
         margin-top: 0;
         font-weight: 600;
+    }
+    
+    /* Welcome Card with Setup Button */
+    .welcome-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius-lg);
+        padding: 3rem;
+        margin: 2rem 0;
+        text-align: center;
+        box-shadow: var(--shadow-medium);
+    }
+    
+    .welcome-card h2 {
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+    
+    .welcome-card p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
     }
     
     /* Cell Cards */
@@ -198,6 +310,7 @@ def apply_modern_css():
         margin: 1rem 0;
         overflow: hidden;
         transition: all 0.3s ease;
+        box-shadow: var(--shadow-light);
     }
     
     .cell-card:hover {
@@ -354,6 +467,7 @@ def apply_modern_css():
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        box-shadow: var(--shadow-light);
     }
     
     .metric-card:hover {
@@ -389,34 +503,28 @@ def apply_modern_css():
         font-weight: 500;
     }
     
-    /* Navigation */
-    .nav-button {
+    /* Theme Toggle */
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
-        margin: 6px 0;
-        background: var(--bg-tertiary);
-        border: 1px solid var(--border-color);
-        border-radius: var(--border-radius);
-        color: var(--text-primary);
-        text-decoration: none;
-        font-weight: 500;
-        transition: all 0.3s ease;
+        justify-content: center;
         cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: var(--shadow-medium);
     }
     
-    .nav-button:hover {
-        background: var(--primary-color);
-        border-color: var(--primary-color);
-        color: var(--bg-primary);
-        transform: translateX(4px);
-    }
-    
-    .nav-button.active {
-        background: var(--gradient-primary);
-        color: var(--bg-primary);
-        border-color: var(--primary-color);
+    .theme-toggle:hover {
+        box-shadow: var(--shadow-heavy);
+        transform: scale(1.1);
     }
     
     /* Timeline */
@@ -459,35 +567,7 @@ def apply_modern_css():
         padding: 1.25rem;
         border-radius: var(--border-radius);
         border: 1px solid var(--border-color);
-    }
-    
-    /* Emergency Button */
-    .emergency-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        background: var(--gradient-danger);
-        color: var(--text-primary);
-        border: none;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        font-size: 1.5rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: var(--shadow-heavy);
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
-    
-    .emergency-btn:hover {
-        transform: scale(1.1);
-        animation: none;
+        box-shadow: var(--shadow-light);
     }
     
     /* Chart Styling */
@@ -497,35 +577,7 @@ def apply_modern_css():
         border-radius: var(--border-radius-lg);
         padding: 1.5rem;
         margin: 1rem 0;
-    }
-    
-    /* Loading Animation */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(10, 10, 10, 0.9);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 9999;
-        backdrop-filter: blur(10px);
-    }
-    
-    .loading-spinner {
-        width: 60px;
-        height: 60px;
-        border: 4px solid rgba(0, 212, 255, 0.3);
-        border-top: 4px solid var(--primary-color);
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        box-shadow: var(--shadow-light);
     }
     
     /* Animations */
@@ -572,9 +624,9 @@ def apply_modern_css():
             grid-template-columns: 1fr;
         }
         
-        .emergency-btn {
+        .theme-toggle {
             position: relative;
-            margin: 1rem;
+            margin: 1rem auto;
         }
     }
     
@@ -595,10 +647,19 @@ def apply_modern_css():
     ::-webkit-scrollbar-thumb:hover {
         background: var(--secondary-color);
     }
+    
+    /* Override Streamlit specific styles */
+    .stApp > div:first-child {
+        background: var(--bg-primary);
+    }
+    
+    /* Fix for plotly charts in different themes */
+    .js-plotly-plot {
+        background: var(--bg-card) !important;
+        border-radius: var(--border-radius-lg);
+    }
     </style>
     """, unsafe_allow_html=True)
-
-apply_modern_css()
 
 # Initialize session state
 def init_session_state():
@@ -615,14 +676,27 @@ def init_session_state():
         'temp_history': {},
         'current_page': 'Dashboard',
         'live_animation': True,
-        'auto_refresh': True
+        'auto_refresh': True,
+        'theme': 'dark',
+        'sidebar_visible': True
     }
     
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
 
-init_session_state()
+# Apply CSS and initialize
+def initialize_app():
+    init_session_state()
+    apply_modern_css()
+    
+    # Apply theme
+    if st.session_state.theme == 'light':
+        st.markdown("""
+        <script>
+        document.documentElement.setAttribute('data-theme', 'light');
+        </script>
+        """, unsafe_allow_html=True)
 
 # Utility Functions
 def get_cell_specs(cell_type):
@@ -715,16 +789,32 @@ def update_temp_history():
             st.session_state.temp_history[cell_key]["time"] = st.session_state.temp_history[cell_key]["time"][-30:]
             st.session_state.temp_history[cell_key]["temp"] = st.session_state.temp_history[cell_key]["temp"][-30:]
 
-# Emergency Stop Function
+# Emergency Stop Function - FIXED
 def emergency_stop():
     st.session_state.emergency_stop = True
     st.session_state.task_running = False
+    st.session_state.stress_test_mode = False
+    
+    # Reset all cells to safe state
     for cell_name in st.session_state.cells_data:
         cell = st.session_state.cells_data[cell_name]
         cell['current'] = 0.0
         cell['status'] = 'Emergency Stop'
+    
+    # Clear task queue
+    for task in st.session_state.task_queue:
+        if task['status'] == 'Running':
+            task['status'] = 'Stopped'
+    
+    st.error("🚨 EMERGENCY STOP ACTIVATED! All operations halted.")
+    st.rerun()
 
-# Sidebar Navigation
+# Page Navigation Function - FIXED
+def navigate_to_page(page_name):
+    st.session_state.current_page = page_name
+    st.rerun()
+
+# Sidebar Navigation - FIXED
 def render_sidebar():
     with st.sidebar:
         # Logo and Title
@@ -735,23 +825,64 @@ def render_sidebar():
         </div>
         """, unsafe_allow_html=True)
         
-        # Navigation Menu
+        # Theme Toggle
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("🌙 Dark" if st.session_state.theme == 'light' else "☀️ Light", 
+                        key="theme_toggle", use_container_width=True):
+                st.session_state.theme = 'light' if st.session_state.theme == 'dark' else 'dark'
+                st.rerun()
+        
+        with col2:
+            if st.button("🔄 Refresh", key="sidebar_refresh", use_container_width=True):
+                if st.session_state.cells_data:
+                    for cell_key in st.session_state.cells_data:
+                        update_cell_real_time(cell_key)
+                    update_temp_history()
+                    st.success("Data refreshed!")
+                    st.rerun()
+        
+        st.divider()
+        
+        # Navigation Menu - FIXED
         nav_items = [
-            ("🏠", "Dashboard", "dashboard"),
-            ("🔧", "Setup", "setup"),
-            ("🎛️", "Control Panel", "control"),
-            ("⚙️", "Task Processes", "tasks"),
-            ("📊", "Analytics", "analytics")
+            ("🏠", "Dashboard"),
+            ("🔧", "Setup"),
+            ("🎛️", "Control Panel"),
+            ("⚙️", "Task Processes"),
+            ("📊", "Analytics")
         ]
         
-        for icon, label, page_key in nav_items:
+        for icon, label in nav_items:
             is_active = st.session_state.current_page == label
+            button_class = "nav-button-active" if is_active else "nav-button-container"
+            
+            st.markdown(f'<div class="{button_class}">', unsafe_allow_html=True)
             if st.button(f"{icon} {label}", 
-                        key=f"nav_{page_key}", 
-                        use_container_width=True,
-                        type="primary" if is_active else "secondary"):
-                st.session_state.current_page = label
+                        key=f"nav_{label.lower().replace(' ', '_')}", 
+                        use_container_width=True):
+                navigate_to_page(label)
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.divider()
+        
+        # Emergency Stop - FIXED
+        st.markdown("### 🚨 Emergency Controls")
+        
+        st.markdown('<div class="emergency-button">', unsafe_allow_html=True)
+        if st.button("🚨 EMERGENCY STOP", key="emergency_stop_btn", use_container_width=True):
+            emergency_stop()
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        if st.session_state.emergency_stop:
+            st.markdown('<div class="emergency-button">', unsafe_allow_html=True)
+            if st.button("✅ Reset Emergency", key="reset_emergency_btn", use_container_width=True):
+                st.session_state.emergency_stop = False
+                for cell_name in st.session_state.cells_data:
+                    st.session_state.cells_data[cell_name]['status'] = 'Idle'
+                st.success("✅ Emergency state reset!")
                 st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
         
         st.divider()
         
@@ -767,24 +898,6 @@ def render_sidebar():
             st.metric("Warnings", active_warnings)
             st.metric("History", len(st.session_state.history))
         
-        st.divider()
-        
-        # Quick Actions
-        st.markdown("### ⚡ Quick Actions")
-        
-        if st.button("🔄 Refresh Data", use_container_width=True):
-            if st.session_state.cells_data:
-                for cell_key in st.session_state.cells_data:
-                    update_cell_real_time(cell_key)
-                update_temp_history()
-                st.success("Data refreshed!")
-                st.rerun()
-        
-        if st.button("🚨 Emergency Stop", use_container_width=True, type="primary"):
-            emergency_stop()
-            st.error("Emergency Stop Activated!")
-            st.rerun()
-        
         # Auto-refresh toggle
         st.session_state.auto_refresh = st.toggle("🔄 Auto Refresh", value=st.session_state.auto_refresh)
 
@@ -797,20 +910,24 @@ def render_header():
     </div>
     """, unsafe_allow_html=True)
 
-# Dashboard Page
+# Dashboard Page - FIXED with working Setup button
 def render_dashboard():
     st.markdown('<div class="fade-in">', unsafe_allow_html=True)
     
     if not st.session_state.cells_data:
         st.markdown("""
-        <div class="content-card bounce-in">
+        <div class="welcome-card bounce-in">
             <h2>🚀 Welcome to BatteryFlow Pro!</h2>
-            <p>Get started by setting up your battery cells in the Setup section.</p>
-            <div style="text-align: center; margin: 2rem 0;">
-                <button class="modern-btn">🔧 Setup Cells</button>
-            </div>
+            <p>Get started by setting up your battery cells to begin monitoring and management.</p>
         </div>
         """, unsafe_allow_html=True)
+        
+        # FIXED Setup Button - Now properly redirects
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if st.button("🔧 Setup Cells", key="dashboard_setup_btn", use_container_width=True):
+                navigate_to_page("Setup")
+        
         st.markdown('</div>', unsafe_allow_html=True)
         return
     
@@ -1177,19 +1294,22 @@ def render_control_panel():
                     cell['status'] = 'Idle'
             st.rerun()
         
-        # Emergency controls
-        if st.button("🚨 Emergency Shutdown", use_container_width=True):
+        # Emergency controls - FIXED
+        st.markdown('<div class="emergency-button">', unsafe_allow_html=True)
+        if st.button("🚨 Emergency Shutdown", key="control_emergency", use_container_width=True):
             emergency_stop()
-            st.error("🚨 Emergency shutdown activated!")
-            st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        if st.button("🔄 Reset Emergency State", use_container_width=True):
-            st.session_state.emergency_stop = False
-            for cell_name in st.session_state.cells_data:
-                cell = st.session_state.cells_data[cell_name]
-                cell['status'] = 'Idle'
-            st.success("✅ Emergency state reset.")
-            st.rerun()
+        if st.session_state.emergency_stop:
+            st.markdown('<div class="emergency-button">', unsafe_allow_html=True)
+            if st.button("🔄 Reset Emergency State", key="control_reset_emergency", use_container_width=True):
+                st.session_state.emergency_stop = False
+                for cell_name in st.session_state.cells_data:
+                    cell = st.session_state.cells_data[cell_name]
+                    cell['status'] = 'Idle'
+                st.success("✅ Emergency state reset.")
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1506,16 +1626,17 @@ def render_analytics():
                         hovertemplate='<b>%{fullData.name}</b><br>Time: %{x}<br>Temperature: %{y:.1f}°C<extra></extra>'
                     ))
             
+            theme_template = "plotly_white" if st.session_state.theme == 'light' else "plotly_dark"
             fig_temp.update_layout(
                 title="📈 Real-time Temperature Monitoring",
                 xaxis_title="Time",
                 yaxis_title="Temperature (°C)",
-                template="plotly_dark",
+                template=theme_template,
                 height=500,
                 hovermode='x unified',
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(26,26,26,0.8)',
-                font=dict(family="Inter, sans-serif", color="white")
+                plot_bgcolor='rgba(0,0,0,0)' if st.session_state.theme == 'dark' else 'rgba(255,255,255,0.8)',
+                font=dict(family="Inter, sans-serif")
             )
             
             st.plotly_chart(fig_temp, use_container_width=True)
@@ -1538,15 +1659,15 @@ def render_analytics():
                 )
             ])
             
+            theme_template = "plotly_white" if st.session_state.theme == 'light' else "plotly_dark"
             fig_voltage.update_layout(
                 title="⚡ Voltage Comparison",
                 xaxis_title="Cells",
                 yaxis_title="Voltage (V)",
-                template="plotly_dark",
+                template=theme_template,
                 height=400,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(26,26,26,0.8)',
-                font=dict(color="white")
+                plot_bgcolor='rgba(0,0,0,0)' if st.session_state.theme == 'dark' else 'rgba(255,255,255,0.8)'
             )
             
             st.plotly_chart(fig_voltage, use_container_width=True)
@@ -1569,11 +1690,10 @@ def render_analytics():
                 title="🔄 Current Comparison",
                 xaxis_title="Cells",
                 yaxis_title="Current (A)",
-                template="plotly_dark",
+                template=theme_template,
                 height=400,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(26,26,26,0.8)',
-                font=dict(color="white")
+                plot_bgcolor='rgba(0,0,0,0)' if st.session_state.theme == 'dark' else 'rgba(255,255,255,0.8)'
             )
             
             st.plotly_chart(fig_current, use_container_width=True)
@@ -1595,10 +1715,10 @@ def render_analytics():
         
         fig_status.update_layout(
             title="📊 Cell Status Distribution",
-            template="plotly_dark",
+            template=theme_template,
             height=400,
             paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(family="Inter, sans-serif", color="white")
+            font=dict(family="Inter, sans-serif")
         )
         
         st.plotly_chart(fig_status, use_container_width=True)
@@ -1620,11 +1740,11 @@ def render_analytics():
                 color_continuous_scale='RdYlGn',
                 range_color=[0, 100]
             )
+            theme_template = "plotly_white" if st.session_state.theme == 'light' else "plotly_dark"
             fig_health.update_layout(
-                template="plotly_dark",
+                template=theme_template,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(26,26,26,0.8)',
-                font=dict(color="white")
+                plot_bgcolor='rgba(0,0,0,0)' if st.session_state.theme == 'dark' else 'rgba(255,255,255,0.8)'
             )
             st.plotly_chart(fig_health, use_container_width=True)
         
@@ -1645,10 +1765,9 @@ def render_analytics():
                 title="Voltage Distribution",
                 xaxis_title="Voltage (V)",
                 yaxis_title="Count",
-                template="plotly_dark",
+                template=theme_template,
                 paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(26,26,26,0.8)',
-                font=dict(color="white")
+                plot_bgcolor='rgba(0,0,0,0)' if st.session_state.theme == 'dark' else 'rgba(255,255,255,0.8)'
             )
             st.plotly_chart(fig_voltage_dist, use_container_width=True)
         
@@ -1906,8 +2025,11 @@ def render_analytics():
     
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Main Application Logic
+# Main Application Logic - FIXED
 def main():
+    # Initialize the application
+    initialize_app()
+    
     # Render sidebar navigation
     render_sidebar()
     
@@ -1915,12 +2037,12 @@ def main():
     render_header()
     
     # Auto-refresh logic
-    if st.session_state.auto_refresh and st.session_state.cells_data:
+    if st.session_state.auto_refresh and st.session_state.cells_data and not st.session_state.emergency_stop:
         for cell_key in st.session_state.cells_data:
             update_cell_real_time(cell_key)
         update_temp_history()
     
-    # Page routing
+    # Page routing - FIXED
     if st.session_state.current_page == "Dashboard":
         render_dashboard()
     elif st.session_state.current_page == "Setup":
@@ -1932,23 +2054,27 @@ def main():
     elif st.session_state.current_page == "Analytics":
         render_analytics()
     
-    # Emergency stop overlay
+    # Emergency stop overlay - FIXED
     if st.session_state.emergency_stop:
         st.markdown("""
-        <div class="loading-overlay">
-            <div style="text-align: center; color: white;">
-                <h2>🚨 EMERGENCY STOP ACTIVATED</h2>
-                <p>All operations have been halted for safety.</p>
-                <p>Use the sidebar to reset the emergency state.</p>
+        <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 107, 107, 0.95); 
+                    z-index: 9999; display: flex; align-items: center; justify-content: center; 
+                    backdrop-filter: blur(10px);">
+            <div style="text-align: center; color: white; background: rgba(0,0,0,0.8); 
+                        padding: 3rem; border-radius: 20px; border: 2px solid #ff6b6b;">
+                <h1 style="font-size: 3rem; margin: 0 0 1rem 0;">🚨 EMERGENCY STOP</h1>
+                <h2 style="margin: 0 0 1rem 0;">System Shutdown Activated</h2>
+                <p style="font-size: 1.2rem; margin: 0;">All operations have been halted for safety.</p>
+                <p style="font-size: 1rem; margin: 1rem 0 0 0; opacity: 0.8;">Use the sidebar to reset the emergency state.</p>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
-    # Auto-refresh for real-time updates
-    if st.session_state.auto_refresh and (
-        st.session_state.current_page == "Dashboard" or 
-        (st.session_state.current_page == "Task Processes" and st.session_state.task_running)
-    ):
+    # Auto-refresh for real-time updates - FIXED
+    if (st.session_state.auto_refresh and 
+        not st.session_state.emergency_stop and 
+        (st.session_state.current_page == "Dashboard" or 
+         (st.session_state.current_page == "Task Processes" and st.session_state.task_running))):
         time.sleep(3)
         st.rerun()
 
